@@ -1,0 +1,20 @@
+<div class="content">
+    <div class="logo-content">
+        <img class="logo" src="assets/images/logo-icon-white.svg" alt="Image">
+    </div>
+
+    <div class="user-details-content">
+        <div class="user-avatar" (click)="menu.toggle($event)">
+            <p-avatar 
+                label="{{ getAvatarLabel() }}" 
+                pBadge 
+                styleClass="mr-2" 
+                value="4" 
+                size="normal" 
+                badgeSize="normal"
+            />
+            <span class="pi pi-sort-down-fill icon"></span>
+        </div>
+        <p-menu #menu [model]="menuItems" [popup]="true" />
+    </div>
+</div>

@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: login-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/platform_db
+    username: admin
+    password: admin
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+
+  output:
+    ansi:
+      enabled: always
+
+  devtools:
+    add-properties: true # Set to false to disable devtools
+
+server:
+  port: 9000
+
+security:
+  jwt:
+    # PLACEHOLDER SECRET KEY - PROVIDE VIA ENVIRONMENT VARIABLE!
+    # CAN BE GENERATED IN TERMINAL WITH: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+    secret-key: <replace-me>
+    expiration-time-ms: 60000
+  refresh-token:
+    expiration-time-ms: 120000
+
+logging:
+  level:
+    org.springframework.web: DEBUG

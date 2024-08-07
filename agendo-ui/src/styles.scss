@@ -1,0 +1,11 @@
+@import "primeng/resources/themes/aura-light-blue/theme.css";
+@import "primeng/resources/primeng.min.css";
+@import "primeicons/primeicons.css";
+
+.main-body {
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    flex-direction: column;
+    display: flex;
+}

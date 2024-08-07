@@ -1,0 +1,28 @@
+<div class="main">
+    <div class="row">
+        <img class="logo" src="assets/images/logo-icon-white.svg" alt="Image">
+    </div>
+    <div class="row">
+        <p-card class="card">
+            <p class="text-center">Welcome back!</p>
+            <div class="col" style="gap: 1rem;" (keydown.enter)="login()">
+                <div class="col" style="gap: 0.5rem;">
+                    <label>Username</label>
+                    <input class="input" type="text" placeholder="username" [formControl]="loginForm.controls.username" pInputText/>
+                </div>
+                <div class="col" style="gap: 0.5rem;">
+                    <label>Password</label>
+                    <input class="input" type="password" placeholder="●●●●●●●●" [formControl]="loginForm.controls.password" pInputText/>
+                </div>
+                <div class="col">
+                    <p-button class="row" label="Login" (onClick)="login()" [disabled]="loginForm.invalid" [loading]="isLoading"/>
+                    <p *ngIf="showBadCredenitalsError" class="text-center">Username or password unknown</p>
+                    <p *ngIf="showUnknownError" class="text-center">Unknown error - try to refresh page</p>
+                </div>
+            </div>
+        </p-card>
+    </div>
+    <footer>
+        <p class="text-primary text-center">Agendo. <a href="https://github.com/simonlangbak" target="_top" class="hover:underline me-4 md:me-6">https://github.com/simonlangbak</a></p>
+    </footer>
+</div>
