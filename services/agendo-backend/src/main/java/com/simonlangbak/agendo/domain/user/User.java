@@ -1,4 +1,4 @@
-package com.simonlangbak.agendo.domain;
+package com.simonlangbak.agendo.domain.user;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;

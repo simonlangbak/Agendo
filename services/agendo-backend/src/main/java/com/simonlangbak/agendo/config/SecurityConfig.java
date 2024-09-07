@@ -1,6 +1,6 @@
-package com.simonlangbak.agendo.loginservice.config;
+package com.simonlangbak.agendo.config;
 
-import com.simonlangbak.agendo.loginservice.filter.JwtAuthenticationFilter;
+import com.simonlangbak.agendo.config.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;

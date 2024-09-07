@@ -1,7 +1,7 @@
-package com.simonlangbak.agendo.loginservice.repository;
+package com.simonlangbak.agendo.repository;
 
-import com.simonlangbak.agendo.loginservice.domain.User;
-import com.simonlangbak.agendo.loginservice.domain.UserRole;
+import com.simonlangbak.agendo.domain.user.User;
+import com.simonlangbak.agendo.domain.user.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

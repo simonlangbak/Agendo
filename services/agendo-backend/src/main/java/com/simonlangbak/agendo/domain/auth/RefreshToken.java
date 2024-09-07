@@ -1,5 +1,6 @@
-package com.simonlangbak.agendo.domain;
+package com.simonlangbak.agendo.domain.auth;
 
+import com.simonlangbak.agendo.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

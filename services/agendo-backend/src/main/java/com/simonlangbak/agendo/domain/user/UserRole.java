@@ -1,4 +1,4 @@
-package com.simonlangbak.agendo.domain;
+package com.simonlangbak.agendo.domain.user;
 
 public enum UserRole {
 

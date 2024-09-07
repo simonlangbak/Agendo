@@ -1,5 +1,6 @@
-package com.simonlangbak.agendo.service;
+package com.simonlangbak.agendo.service.auth;
 
+import com.simonlangbak.agendo.service.AbstractService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

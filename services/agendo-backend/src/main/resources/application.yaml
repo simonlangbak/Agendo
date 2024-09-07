@@ -1,6 +1,6 @@
 spring:
   application:
-    name: login-service
+    name: agendo
 
   datasource:
     url: jdbc:postgresql://localhost:5432/platform_db

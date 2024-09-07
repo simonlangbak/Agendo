@@ -1,7 +1,7 @@
-package com.simonlangbak.agendo.loginservice.web.dto;
+package com.simonlangbak.agendo.web.dto;
 
-import com.simonlangbak.agendo.loginservice.domain.User;
-import com.simonlangbak.agendo.loginservice.domain.UserRole;
+import com.simonlangbak.agendo.domain.user.User;
+import com.simonlangbak.agendo.domain.user.UserRole;
 
 public record UserDTO(Long id, String username, UserRole userRole) {
 

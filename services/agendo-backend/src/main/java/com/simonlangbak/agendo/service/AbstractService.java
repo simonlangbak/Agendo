@@ -1,4 +1,4 @@
-package com.simonlangbak.agendo.loginservice.service;
+package com.simonlangbak.agendo.service;
 
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package com.simonlangbak.agendo.loginservice.web.dto;
+package com.simonlangbak.agendo.web.dto;
 
 /**
  *

@@ -1,7 +1,7 @@
-package com.simonlangbak.agendo.filter;
+package com.simonlangbak.agendo.config.filter;
 
 import com.simonlangbak.agendo.config.SecurityConfig;
-import com.simonlangbak.agendo.service.JwtAuthenticationService;
+import com.simonlangbak.agendo.service.auth.JwtAuthenticationService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

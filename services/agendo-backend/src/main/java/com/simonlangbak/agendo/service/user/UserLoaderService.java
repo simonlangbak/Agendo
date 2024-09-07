@@ -1,7 +1,7 @@
-package com.simonlangbak.agendo.service;
+package com.simonlangbak.agendo.service.user;
 
-import com.simonlangbak.agendo.domain.User;
-import com.simonlangbak.agendo.domain.UserRole;
+import com.simonlangbak.agendo.domain.user.User;
+import com.simonlangbak.agendo.domain.user.UserRole;
 import jakarta.transaction.Transactional;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
+public class UserLoaderService implements ApplicationListener<ContextRefreshedEvent> {
 
     private boolean alreadySetup = false;
 
@@ -17,7 +17,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     private final PasswordEncoder passwordEncoder;
 
-    public SetupDataLoader(UserService userService, PasswordEncoder passwordEncoder) {
+    public UserLoaderService(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }

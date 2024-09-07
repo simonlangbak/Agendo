@@ -1,7 +1,8 @@
-package com.simonlangbak.agendo.service;
+package com.simonlangbak.agendo.service.auth;
 
-import com.simonlangbak.agendo.domain.User;
+import com.simonlangbak.agendo.domain.user.User;
 import com.simonlangbak.agendo.repository.UserRepository;
+import com.simonlangbak.agendo.service.AbstractService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;

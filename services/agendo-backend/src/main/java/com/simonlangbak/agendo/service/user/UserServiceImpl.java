@@ -1,7 +1,8 @@
-package com.simonlangbak.agendo.service;
+package com.simonlangbak.agendo.service.user;
 
-import com.simonlangbak.agendo.domain.User;
+import com.simonlangbak.agendo.domain.user.User;
 import com.simonlangbak.agendo.repository.UserRepository;
+import com.simonlangbak.agendo.service.AbstractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package com.simonlangbak.agendo.loginservice;
+package com.simonlangbak.agendo;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;

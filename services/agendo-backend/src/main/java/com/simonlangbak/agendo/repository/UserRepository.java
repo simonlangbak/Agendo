@@ -1,6 +1,6 @@
-package com.simonlangbak.agendo.loginservice.repository;
+package com.simonlangbak.agendo.repository;
 
-import com.simonlangbak.agendo.loginservice.domain.User;
+import com.simonlangbak.agendo.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

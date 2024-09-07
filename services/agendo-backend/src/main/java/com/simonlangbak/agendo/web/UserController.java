@@ -1,8 +1,8 @@
-package com.simonlangbak.agendo.loginservice.web;
+package com.simonlangbak.agendo.web;
 
-import com.simonlangbak.agendo.loginservice.domain.User;
-import com.simonlangbak.agendo.loginservice.service.UserService;
-import com.simonlangbak.agendo.loginservice.web.dto.UserDTO;
+import com.simonlangbak.agendo.domain.user.User;
+import com.simonlangbak.agendo.service.user.UserService;
+import com.simonlangbak.agendo.web.dto.UserDTO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

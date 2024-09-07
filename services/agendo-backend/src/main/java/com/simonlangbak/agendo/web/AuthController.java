@@ -1,12 +1,12 @@
-package com.simonlangbak.agendo.loginservice.web;
+package com.simonlangbak.agendo.web;
 
-import com.simonlangbak.agendo.loginservice.domain.RefreshToken;
-import com.simonlangbak.agendo.loginservice.domain.User;
-import com.simonlangbak.agendo.loginservice.service.AuthenticationService;
-import com.simonlangbak.agendo.loginservice.service.JwtAuthenticationService;
-import com.simonlangbak.agendo.loginservice.service.RefreshTokenService;
-import com.simonlangbak.agendo.loginservice.service.UserService;
-import com.simonlangbak.agendo.loginservice.web.dto.*;
+import com.simonlangbak.agendo.domain.auth.RefreshToken;
+import com.simonlangbak.agendo.domain.user.User;
+import com.simonlangbak.agendo.service.auth.AuthenticationService;
+import com.simonlangbak.agendo.service.auth.JwtAuthenticationService;
+import com.simonlangbak.agendo.service.auth.RefreshTokenService;
+import com.simonlangbak.agendo.service.user.UserService;
+import com.simonlangbak.agendo.web.dto.*;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
