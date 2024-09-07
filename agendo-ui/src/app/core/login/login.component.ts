@@ -40,7 +40,6 @@ export class LoginComponent {
   }
 
   private navigateToMainOnSuccess(result: boolean | number) {
-    console.log(result);
     this.isLoading = false;
     if (result === true) {
       this.showBadCredenitalsError = false;
