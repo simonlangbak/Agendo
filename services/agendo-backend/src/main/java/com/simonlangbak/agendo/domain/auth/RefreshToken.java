@@ -1,4 +1,4 @@
-package com.simonlangbak.agendo.loginservice.domain;
+package com.simonlangbak.agendo.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

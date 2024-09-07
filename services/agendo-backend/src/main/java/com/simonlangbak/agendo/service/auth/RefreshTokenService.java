@@ -1,8 +1,8 @@
-package com.simonlangbak.agendo.loginservice.service;
+package com.simonlangbak.agendo.service;
 
-import com.simonlangbak.agendo.loginservice.domain.RefreshToken;
-import com.simonlangbak.agendo.loginservice.domain.User;
-import com.simonlangbak.agendo.loginservice.repository.RefreshTokenRepository;
+import com.simonlangbak.agendo.domain.RefreshToken;
+import com.simonlangbak.agendo.domain.User;
+import com.simonlangbak.agendo.repository.RefreshTokenRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;

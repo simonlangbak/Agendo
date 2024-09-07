@@ -1,6 +1,7 @@
-package com.simonlangbak.agendo.loginservice.filter;
+package com.simonlangbak.agendo.filter;
 
-import com.simonlangbak.agendo.loginservice.service.JwtAuthenticationService;
+import com.simonlangbak.agendo.config.SecurityConfig;
+import com.simonlangbak.agendo.service.JwtAuthenticationService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,8 +26,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.simonlangbak.agendo.loginservice.config.SecurityConfig.AUTH_API;
-
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -35,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
 
     static {
-        final String[] publicEndPoints = {AUTH_API};
+        final String[] publicEndPoints = {SecurityConfig.AUTH_API};
         ignorePatterns(publicEndPoints);
     }
 

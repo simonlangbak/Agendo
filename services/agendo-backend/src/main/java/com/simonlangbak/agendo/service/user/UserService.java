@@ -1,6 +1,6 @@
-package com.simonlangbak.agendo.loginservice.service;
+package com.simonlangbak.agendo.service;
 
-import com.simonlangbak.agendo.loginservice.domain.User;
+import com.simonlangbak.agendo.domain.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;

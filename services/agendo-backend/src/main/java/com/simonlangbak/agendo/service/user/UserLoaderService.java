@@ -1,7 +1,7 @@
-package com.simonlangbak.agendo.loginservice.service;
+package com.simonlangbak.agendo.service;
 
-import com.simonlangbak.agendo.loginservice.domain.User;
-import com.simonlangbak.agendo.loginservice.domain.UserRole;
+import com.simonlangbak.agendo.domain.User;
+import com.simonlangbak.agendo.domain.UserRole;
 import jakarta.transaction.Transactional;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
