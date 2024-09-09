@@ -1,5 +1,6 @@
 package com.simonlangbak.agendo.domain.auth;
 
+import com.simonlangbak.agendo.domain.BaseEntity;
 import com.simonlangbak.agendo.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RefreshToken {
+public class RefreshToken extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
