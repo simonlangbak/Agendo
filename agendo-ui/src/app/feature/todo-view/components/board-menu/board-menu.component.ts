@@ -9,6 +9,7 @@ import { AddBoardDialogComponent } from "../add-board-dialog/add-board-dialog.co
 import { BoardService } from '../../services/board.service';
 import { BoardDTO } from '../../model/board';
 import { DeleteBoardDialogComponent } from '../delete-board-dialog/delete-board-dialog.component';
+import { BoardSelectorService } from '../../services/board-selector.service';
 
 @Component({
   selector: 'app-board-menu',
@@ -24,14 +25,31 @@ export class BoardMenuComponent {
 
   titleItem: BoardMenuItem = new BoardMenuItem(undefined, 'Boards', PrimeIcons.CLIPBOARD, this.getTitleOptions());
   menuItems: Signal<BoardMenuItem[]> = computed(() => {
+    const selectedBoard = this.boardSelectorService.selectedBoard();
+
+    this.titleItem.isSelected = selectedBoard === undefined;
+    
     const boards: BoardDTO[] = this.boardService.boards();
-    return boards.map((board: BoardDTO) => this.mapToBoardMenu(board));
+    return boards.map((board: BoardDTO) => this.mapToBoardMenu(board, selectedBoard));
   });
 
   constructor(
-    private boardService: BoardService
+    private boardService: BoardService,
+    private boardSelectorService: BoardSelectorService
   ) {
     boardService.updateBoardsWithLatestData();
+  }
+
+  public selectBoard(boardMenuItem: BoardMenuItem) {
+    const boardId = boardMenuItem.id;
+    const selectBoard = this.boardSelectorService.selectedBoard();
+
+    const shouldDeselect = boardId === selectBoard?.id;
+    if (shouldDeselect) {
+      this.boardSelectorService.selectDeselectBoard(undefined);
+    } else {
+      this.boardSelectorService.selectDeselectBoard(boardId);
+    }
   }
 
   private getTitleOptions(): MenuItem[] {
@@ -49,12 +67,14 @@ export class BoardMenuComponent {
     ]
   }
 
-  private mapToBoardMenu(board: BoardDTO): BoardMenuItem {
+  private mapToBoardMenu(board: BoardDTO, selectedBoard: BoardDTO | undefined): BoardMenuItem {
+    const isSelected = selectedBoard !== undefined && board.id === selectedBoard.id;
     return {
       id: board.id,
       label: board.name,
       icon: PrimeIcons.CLIPBOARD,
-      optionItems: this.getBoardOptions(board)
+      optionItems: this.getBoardOptions(board),
+      isSelected
     };
   }
 

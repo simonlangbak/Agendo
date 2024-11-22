@@ -1,22 +1,26 @@
 :host {
-    flex-grow: 1;
     background-color: var(--surface-100);
     box-shadow: 5px 5px #00000005,0 0 2px #0000000d,0 1px 4px #00000014;
     z-index: 2000;
     padding: 0.5rem 1.5rem;
     width: 14rem;
+    overflow: hidden;
 }
 
 .menu {
     display: flex;
     flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 0;
 }
 
 .menu-item {
     display: flex;
     flex-direction: row;
     align-items: center;
-    font-weight: 600;
+    font-weight: 500;
+    padding: 0 0.5rem;
+    border-radius: 0.5rem;
 }
 
 .menu-options {
@@ -25,4 +29,19 @@
 
 .menu-text span {
     padding-right: 0.5rem;
+}
+
+.selected-menu-item {
+    background-color: var(--gray-200);
+    color: var(--highlight-text-color);
+}
+
+.unselected-menu-item:hover {
+    background-color: var(--gray-200);
+    color: var(--highlight-text-color);
+}
+
+.selected-menu-item:hover {
+    background-color: var(--gray-200);
+    color: var(--highlight-text-color);
 }

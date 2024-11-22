@@ -1,6 +1,6 @@
 <!-- A template for any menu item (either title or board) -->
 <ng-template #menuItemTemplate let-item>
-    <div class="menu-item" #menuItem>
+    <div class="menu-item" [ngClass]="item.isSelected ? 'selected-menu-item' : 'unselected-menu-item'" #menuItem (click)="selectBoard(item)">
         <div class="menu-text">
             @if (item.icon) {
                 <p><span [ngClass]="item.icon"></span> {{ item.label }}</p>
