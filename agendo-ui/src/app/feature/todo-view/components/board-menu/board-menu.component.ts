@@ -41,15 +41,8 @@ export class BoardMenuComponent {
   }
 
   public selectBoard(boardMenuItem: BoardMenuItem) {
-    const boardId = boardMenuItem.id;
-    const selectBoard = this.boardSelectorService.selectedBoard();
-
-    const shouldDeselect = boardId === selectBoard?.id;
-    if (shouldDeselect) {
-      this.boardSelectorService.selectDeselectBoard(undefined);
-    } else {
-      this.boardSelectorService.selectDeselectBoard(boardId);
-    }
+    const boardId = boardMenuItem?.id;
+    this.boardSelectorService.selectDeselectBoard(boardId);
   }
 
   private getTitleOptions(): MenuItem[] {
