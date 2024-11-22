@@ -17,7 +17,7 @@
                 <div class="col">
                     <p-button class="row" label="Login" (onClick)="login()" [disabled]="loginForm.invalid" [loading]="isLoading"/>
                     <p *ngIf="showBadCredenitalsError" class="text-center">Username or password unknown</p>
-                    <p *ngIf="showUnknownError" class="text-center">Unknown error - try to refresh page</p>
+                    <p *ngIf="showUnknownError" class="text-center">Unknown error - try refreshing the page</p>
                 </div>
             </div>
         </p-card>

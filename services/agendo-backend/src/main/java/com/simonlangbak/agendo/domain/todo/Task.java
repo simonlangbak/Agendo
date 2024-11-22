@@ -3,6 +3,7 @@ package com.simonlangbak.agendo.domain.todo;
 import com.simonlangbak.agendo.domain.BaseEntity;
 import com.simonlangbak.agendo.domain.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,9 +20,7 @@ public class Task extends BaseEntity implements Comparable<Task> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-
-    private String description;
+    private String name;
 
     @ManyToMany
     @JoinTable(
@@ -32,9 +31,31 @@ public class Task extends BaseEntity implements Comparable<Task> {
     private SortedSet<User> assignees = new TreeSet<>();
 
     @ManyToOne
+    @NotNull
     private BoardColumn column;
 
-    public Task() {
+    protected Task() {
+    }
+
+    public Task(String name, BoardColumn column) {
+        this.name = name;
+        this.column = column;
+    }
+
+    public void setColumn(BoardColumn column) {
+        if (column == null) {
+            throw new IllegalArgumentException("Board column cannot be null");
+        }
+
+        BoardColumn oldColumn = this.column;
+        this.column = column;
+
+        // Remove task for another column
+        if (oldColumn != null && !oldColumn.equals(column)) {
+            column.removeTask(this);
+        }
+
+        column.addTask(this);
     }
 
     /**
@@ -49,20 +70,19 @@ public class Task extends BaseEntity implements Comparable<Task> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Task task)) return false;
-        return Objects.equals(id, task.id) && Objects.equals(title, task.title);
+        return Objects.equals(id, task.id) && Objects.equals(name, task.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title);
+        return Objects.hash(id, name);
     }
 
     @Override
     public String toString() {
         return "Task{" +
                 "id=" + id +
-                ", name='" + title + '\'' +
-                ", description='" + description + '\'' +
+                ", name='" + name + '\'' +
                 ", assignees=" + assignees +
                 ", pilar=" + column +
                 '}';

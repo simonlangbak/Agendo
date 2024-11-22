@@ -1,11 +1,15 @@
 package com.simonlangbak.agendo.domain;
 
 import jakarta.persistence.Column;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
+@Getter
+@Setter
 public abstract class BaseEntity {
 
     @CreationTimestamp
@@ -16,19 +20,4 @@ public abstract class BaseEntity {
     @Column(nullable = false)
     private Date updated;
 
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
 }

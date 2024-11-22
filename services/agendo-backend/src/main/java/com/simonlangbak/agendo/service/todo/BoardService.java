@@ -38,6 +38,13 @@ public class BoardService extends AbstractService {
     }
 
     @Transactional
+    public void deleteBoard(@NonNull Long boardId) {
+        log.debug("Trying to delete board with id: {}", boardId);
+        boardRepository.deleteById(boardId);
+        log.info("Successfully deleted board with id: {}", boardId);
+    }
+
+    @Transactional
     public BoardColumn addColumnToBoard(Long boardId, String columnName, String columnDescription) {
         log.debug("Trying to add column to board with id: {}, column name: {} and description: {}", boardId, columnName, columnDescription);
 

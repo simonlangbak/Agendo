@@ -23,13 +23,12 @@ public class BoardColumn extends BaseEntity implements Comparable<BoardColumn> {
     @NotBlank
     private String name;
 
-    @NotBlank
     private String description;
 
     @ManyToOne
     private Board board;
 
-    @OneToMany(mappedBy = "column")
+    @OneToMany(mappedBy = "column", cascade = CascadeType.ALL)
     private SortedSet<Task> tasks = new TreeSet<>();
 
     public BoardColumn() {
@@ -50,14 +49,25 @@ public class BoardColumn extends BaseEntity implements Comparable<BoardColumn> {
         }
 
         tasks.add(task);
+
+        // Set column if not already set
+        if (!this.equals(task.getColumn())) {
+            task.setColumn(this);
+        }
     }
 
-    public SortedSet<Task> getTasks() {
-        return Collections.unmodifiableSortedSet(tasks);
-    }
+    public void removeTask(Task task) {
+        if (task == null) {
+            throw new IllegalArgumentException("Task cannot be null");
+        }
 
-    private void setTasks(SortedSet<Task> tasks) {
-        this.tasks = tasks;
+        // Remove task from set
+        tasks.remove(task);
+
+        // Remove task's association to this column
+        if (this.equals(task.getColumn())) {
+            task.setColumn(null);
+        }
     }
 
     /**

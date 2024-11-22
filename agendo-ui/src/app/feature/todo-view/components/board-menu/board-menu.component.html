@@ -1,0 +1,36 @@
+<!-- A template for any menu item (either title or board) -->
+<ng-template #menuItemTemplate let-item>
+    <div class="menu-item" #menuItem>
+        <div class="menu-text">
+            @if (item.icon) {
+                <p><span [ngClass]="item.icon"></span> {{ item.label }}</p>
+                } @else {
+                <p>{{ item.label }}</p>
+                }
+        </div>
+        <div class="menu-options">
+            @if (item.optionItems !== undefined && item.optionItems.length !== 0) {
+                <p-menu #menu [model]="item.optionItems" [popup]="true" />
+                <p-button [outlined]="true" severity="secondary" (onClick)="menu.toggle($event)" icon="pi pi-ellipsis-v" />
+                }
+        </div>
+    </div>
+</ng-template>
+
+<!-- Building the hierarchy -->
+<div class="menu">
+    <!-- Item for title -->
+    <ng-container [ngTemplateOutlet]="menuItemTemplate"
+        [ngTemplateOutletContext]="{$implicit: titleItem}"></ng-container>
+
+    <p-divider />
+
+    <!-- Item for every board -->
+    @for (menuItem of menuItems(); track $index) {
+    <ng-container [ngTemplateOutlet]="menuItemTemplate"
+        [ngTemplateOutletContext]="{$implicit: menuItem}"></ng-container>
+    }
+</div>
+
+<app-add-board-dialog [(visible)]="showAddBoardDialog"></app-add-board-dialog>
+<app-delete-board-dialog [(visible)]="showDeleteBoardDialog" [boardToDelete]="boardToDelete"></app-delete-board-dialog>

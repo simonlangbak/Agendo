@@ -1,0 +1,26 @@
+<p-dialog header="Add a new board" [modal]="true" [(visible)]="visible" (onHide)="onHide()"[style]="{ width: '28rem' }">
+    <div class="dialog-description">
+        <span>Provide information about the new board below.</span>
+    </div>
+
+    <div class="col" style="gap: 1rem;" (keydown.enter)="onSave()">
+        <div>
+            <div class="col input-group">
+                <label>Name</label>
+                <input class="input" type="text" placeholder="e.g. Daily task board"
+                    [formControl]="createBoardForm.controls.name" pInputText />
+            </div>
+            <div class="col input-group">
+                <label>Description</label>
+                <input class="input" type="text" placeholder="e.g. A board for planning daily tasks"
+                    [formControl]="createBoardForm.controls.description" pInputText />
+            </div>
+        </div>
+
+        <div class="row button-group">
+            <p-button label="Cancel" severity="secondary" (onClick)="onHide()" />
+            <p-button label="Save" (onClick)="onSave()" [disabled]="createBoardForm.invalid" [loading]="isSaving" />
+            
+        </div>
+    </div>
+</p-dialog>

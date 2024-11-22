@@ -1,0 +1,28 @@
+:host {
+    flex-grow: 1;
+    background-color: var(--surface-100);
+    box-shadow: 5px 5px #00000005,0 0 2px #0000000d,0 1px 4px #00000014;
+    z-index: 2000;
+    padding: 0.5rem 1.5rem;
+    width: 14rem;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: 600;
+}
+
+.menu-options {
+    margin-left: auto;
+}
+
+.menu-text span {
+    padding-right: 0.5rem;
+}

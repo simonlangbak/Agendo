@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Collections;
 import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -16,17 +15,14 @@ import java.util.TreeSet;
 @Setter
 public class Board extends BaseEntity {
 
-    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Getter
     @NotBlank
+    @Column(unique = true)
     private String name;
 
-    @Getter
-    @NotBlank
     private String description;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
@@ -49,15 +45,11 @@ public class Board extends BaseEntity {
         }
 
         columns.add(boardColumn);
-        boardColumn.setBoard(this);
-    }
 
-    public SortedSet<BoardColumn> getColumns() {
-        return Collections.unmodifiableSortedSet(columns);
-    }
-
-    private void setColumns(SortedSet<BoardColumn> columns) {
-        this.columns = columns;
+        // Set board if not already set
+        if (!this.equals(boardColumn.getBoard())) {
+            boardColumn.setBoard(this);
+        }
     }
 
     @Override
