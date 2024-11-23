@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, DialogModule, ButtonModule, InputTextModule, ReactiveFormsModule],
   templateUrl: './add-board-dialog.component.html',
-  styleUrl: './add-board-dialog.component.css'
+  styleUrl: './add-board-dialog.component.scss'
 })
 export class AddBoardDialogComponent {
   @Input() visible: boolean = false;

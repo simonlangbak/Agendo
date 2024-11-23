@@ -10,7 +10,7 @@ import { BoardDTO } from '../../model/board';
   standalone: true,
   imports: [DialogModule, ButtonModule, ReactiveFormsModule],
   templateUrl: './delete-board-dialog.component.html',
-  styleUrl: './delete-board-dialog.component.css'
+  styleUrl: './delete-board-dialog.component.scss'
 })
 export class DeleteBoardDialogComponent {
   @Input() boardToDelete: BoardDTO | undefined;

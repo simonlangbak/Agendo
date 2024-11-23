@@ -8,7 +8,7 @@ import { BoardDTO } from '../../model/board';
   standalone: true,
   imports: [],
   templateUrl: './board-view.component.html',
-  styleUrl: './board-view.component.css'
+  styleUrl: './board-view.component.scss'
 })
 export class BoardViewComponent {
 

@@ -16,7 +16,7 @@ import { BoardSelectorService } from '../../services/board-selector.service';
   standalone: true,
   imports: [CommonModule, DividerModule, MenuModule, ButtonModule, AddBoardDialogComponent, DeleteBoardDialogComponent],
   templateUrl: './board-menu.component.html',
-  styleUrl: './board-menu.component.css'
+  styleUrl: './board-menu.component.scss'
 })
 export class BoardMenuComponent {
   showAddBoardDialog: boolean = false;
