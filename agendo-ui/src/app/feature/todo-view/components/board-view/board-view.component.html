@@ -11,7 +11,10 @@
 
 <!-- A template for when a board is selected -->
 <ng-template #boardSelectedView let-item>
-    <p>Board: {{ item.name }}</p>
+    <div class="board-view">
+        <p class="board-title">{{ item.name }}</p>
+    </div>
+    
 </ng-template>
 
 <!-- The board view -->
