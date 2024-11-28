@@ -1,1 +1,27 @@
-<p>BOARD SELECTED: {{ selectedBoard() !== undefined ? selectedBoard()?.name : 'UNDEFINED' }}</p>
+<!-- A template for when no board is selected -->
+<ng-template #noBoardSelectedView>
+    <div class="no-board-view">
+        <h2>No board selected</h2>
+        <div class="create-board-text">
+            <h3>Select a board on the left or </h3>
+            <p-button label="create a new board..." [raised]="true" severity="success" (onClick)="onCreateBoardClicked()" />
+        </div>
+    </div>
+</ng-template>
+
+<!-- A template for when a board is selected -->
+<ng-template #boardSelectedView let-item>
+    <p>Board: {{ item.name }}</p>
+</ng-template>
+
+<!-- The board view -->
+<div class="view">
+    @if (selectedBoard() === undefined) {
+    <ng-container [ngTemplateOutlet]="noBoardSelectedView"></ng-container>
+    } @else {
+    <ng-container [ngTemplateOutlet]="boardSelectedView"
+        [ngTemplateOutletContext]="{$implicit: selectedBoard()}"></ng-container>
+    }
+</div>
+
+<app-add-board-dialog [(visible)]="showAddBoardDialog"></app-add-board-dialog>

@@ -5,6 +5,8 @@ import { DialogModule } from 'primeng/dialog'
 import { BoardService } from '../../services/board.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { BoardSelectorService } from '../../services/board-selector.service';
+import { BoardDTO } from '../../model/board';
 
 @Component({
   selector: 'app-add-board-dialog',
@@ -27,6 +29,7 @@ export class AddBoardDialogComponent {
 
   constructor(
     private boardService: BoardService,
+    private boardSelectorService: BoardSelectorService,
     private formBuilder: FormBuilder
   ) { }
 
@@ -38,18 +41,21 @@ export class AddBoardDialogComponent {
     this.isSaving = true;
     const name = this.createBoardForm.controls.name.value!;
     const description = this.createBoardForm.controls.description.value!;
-    const requestPromise: Promise<boolean | number> = this.boardService.addBoard(name, description);
+    const requestPromise: Promise<BoardDTO | number> = this.boardService.addBoard(name, description);
 
-    requestPromise.then((result: boolean | number)=> {
+    requestPromise.then((result: BoardDTO | number)=> {
       this.handleSaveBoardRequestResult(result);
     });
   }
 
-  private handleSaveBoardRequestResult(result: boolean | number) {
+  private handleSaveBoardRequestResult(result: BoardDTO | number) {
     this.isSaving = false;
 
-    if (result === true) {
+    const board = result as BoardDTO;
+    if (board.id !== undefined) {
+      this.boardSelectorService.selectDeselectBoard(board.id)
       this.visible = false;
+
     } else {
        this.showBoardExistsWithSameNameError = true;
     }

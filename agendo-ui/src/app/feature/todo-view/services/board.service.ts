@@ -39,14 +39,14 @@ export class BoardService {
   /**
    * Adds a board. If successful, the board is also added to the boards signal.
    */
-  public addBoard(name: string, description: string): Promise<boolean | number> {
+  public addBoard(name: string, description: string): Promise<BoardDTO | number> {
     return firstValueFrom(
       this.httpClient.post<BoardDTO>('api/v1/board', { name, description } as BoardCreationDTO, { observe: 'response'})
         .pipe(
           map((boardResponse: HttpResponse<BoardDTO>) => {
             const board = boardResponse.body as BoardDTO;
             this.mergeBoardIntoSignal(board);
-            return true;
+            return board;
           }),
           catchError((err: HttpErrorResponse) => {
             console.log('An error occurred for the request', err);

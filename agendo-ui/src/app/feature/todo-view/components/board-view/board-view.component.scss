@@ -1,0 +1,27 @@
+:host {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+}
+
+.view {
+    display: flex;
+    width: 100%;
+}
+
+.no-board-view {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-board-text {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+    justify-content: center;
+    align-items: center;
+}
