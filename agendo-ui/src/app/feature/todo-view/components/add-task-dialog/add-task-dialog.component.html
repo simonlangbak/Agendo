@@ -1,0 +1,21 @@
+<p-dialog header="Add a new task" [modal]="true" [(visible)]="visible" (onHide)="onHide()"[style]="{ width: '28rem' }">
+    <div class="dialog-description">
+        <span>Provide information about the new task below.</span>
+    </div>
+
+    <div class="col" style="gap: 1rem;" (keydown.enter)="onSave()">
+        <div>
+            <div class="col input-group">
+                <label>Name</label>
+                <input class="input" type="text" placeholder="e.g. Make UI design for the feature"
+                    [formControl]="createTaskForm.controls.name" pInputText />
+            </div>
+        </div>
+
+        <div class="row button-group">
+            <p-button label="Cancel" severity="secondary" (onClick)="onHide()" />
+            <p-button label="Save" (onClick)="onSave()" [disabled]="createTaskForm.invalid" [loading]="isSaving" />
+            
+        </div>
+    </div>
+</p-dialog>

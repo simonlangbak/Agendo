@@ -16,7 +16,7 @@ import { BoardDTO } from '../../model/board';
   styleUrl: './add-board-dialog.component.scss'
 })
 export class AddBoardDialogComponent {
-  @Input() visible: boolean = false;
+  @Input({ required: true }) visible: boolean = false;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter();
 
   isSaving = false;
