@@ -52,6 +52,8 @@ export class BoardSelectorService {
         console.log('Board with id not found', boardId);
       } else {
         this.selectedBoardsSignal.set(board);
+        // Fetch tasks for the board
+        this.boardService.getTasksByBoard(board.id);
       }
   }
 
