@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -29,6 +31,7 @@ public class BoardColumn extends BaseEntity implements Comparable<BoardColumn> {
     private Board board;
 
     @OneToMany(mappedBy = "column", cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)  // Also deletes all tasks
     private SortedSet<Task> tasks = new TreeSet<>();
 
     public BoardColumn() {

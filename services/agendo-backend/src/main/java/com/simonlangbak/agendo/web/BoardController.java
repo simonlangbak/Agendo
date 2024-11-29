@@ -46,13 +46,6 @@ public class BoardController {
         boardService.deleteBoard(boardId);
     }
 
-    @PostMapping("/{id}/column")
-    @ResponseStatus(HttpStatus.CREATED)
-    public BoardColumnDTO addColumnToBoard(@Valid @PathVariable Long id, @RequestBody ColumnCreationDTO columnCreationDTO) {
-        BoardColumn addedColumn = boardService.addColumnToBoard(id, columnCreationDTO.name(), columnCreationDTO.description());
-        return BoardColumnDTO.of(addedColumn);
-    }
-
     @GetMapping("{id}/task")
     public List<TaskDTO> getTasksByBoardId(@PathVariable Long id) {
         SortedSet<Task> tasksByBoard = taskService.getTasksByBoard(id);

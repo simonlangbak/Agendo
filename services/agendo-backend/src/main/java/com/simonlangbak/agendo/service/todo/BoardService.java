@@ -10,6 +10,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class BoardService extends AbstractService {
@@ -27,11 +29,24 @@ public class BoardService extends AbstractService {
         return boardRepository.findAll();
     }
 
+    @Transactional
     public Board createBoard(@NonNull String name, @NonNull String description) {
         log.debug("Trying to add new board with name: {} and description: {}", name, description);
 
         Board board = new Board(name, description);
         board =  boardRepository.save(board);
+
+        // For now a board is created with 4 default columns
+        addColumnToBoard(board, "TODO", "For tasks pending to be started");
+        addColumnToBoard(board, "In-progress", "For tasks were work is in-progress");
+        addColumnToBoard(board, "Review", "For tasks waiting review");
+        addColumnToBoard(board, "Done", "For tasks that are done");
+
+        Optional<Board> boardOptional = boardRepository.findById(board.getId());
+        if (boardOptional.isEmpty()) {
+            // Unhandled exceptions return an HTTP 500 response
+            throw new NoSuchElementException("Board with id: " + board.getId() + " not found");
+        }
 
         log.info("Successfully added new board: {}", board);
         return board;
@@ -44,14 +59,8 @@ public class BoardService extends AbstractService {
         log.info("Successfully deleted board with id: {}", boardId);
     }
 
-    @Transactional
-    public BoardColumn addColumnToBoard(Long boardId, String columnName, String columnDescription) {
-        log.debug("Trying to add column to board with id: {}, column name: {} and description: {}", boardId, columnName, columnDescription);
-
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> {
-           log.warn("Could not find board with id: {}", boardId);
-           return new IllegalArgumentException("Could not find board with id: " + boardId);
-        });
+    private void addColumnToBoard(Board board, String columnName, String columnDescription) {
+        log.debug("Trying to add column to board with id: {}, column name: {} and description: {}", board.getId(), columnName, columnDescription);
 
         BoardColumn boardColumn = new BoardColumn(board, columnName, columnDescription);
         board.addColumn(boardColumn);
@@ -59,6 +68,5 @@ public class BoardService extends AbstractService {
         boardColumn = boardColumnRepository.save(boardColumn);
 
         log.info("Added new column: {} to board: {}", boardColumn, board);
-        return boardColumn;
     }
 }

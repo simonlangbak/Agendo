@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Objects;
 import java.util.SortedSet;
@@ -26,6 +28,7 @@ public class Board extends BaseEntity {
     private String description;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE) // Also deletes all columns
     private SortedSet<BoardColumn> columns = new TreeSet<>();
 
     public Board() {
