@@ -10,11 +10,12 @@ import { BoardService } from '../../services/board.service';
 import { BoardDTO } from '../../model/board';
 import { DeleteBoardDialogComponent } from '../delete-board-dialog/delete-board-dialog.component';
 import { BoardSelectorService } from '../../services/board-selector.service';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-board-menu',
   standalone: true,
-  imports: [CommonModule, DividerModule, MenuModule, ButtonModule, AddBoardDialogComponent, DeleteBoardDialogComponent],
+  imports: [CommonModule, DividerModule, MenuModule, ButtonModule, AddBoardDialogComponent, DeleteBoardDialogComponent, TooltipModule],
   templateUrl: './board-menu.component.html',
   styleUrl: './board-menu.component.scss'
 })
@@ -23,7 +24,7 @@ export class BoardMenuComponent {
   showDeleteBoardDialog: boolean = false;
   boardToDelete: BoardDTO | undefined;
 
-  titleItem: BoardMenuItem = new BoardMenuItem(undefined, 'Boards', PrimeIcons.CLIPBOARD, this.getTitleOptions());
+  titleItem: BoardMenuItem = new BoardMenuItem(undefined, 'Dashboard', PrimeIcons.TH_LARGE, this.getTitleOptions());
   menuItems: Signal<BoardMenuItem[]> = computed(() => {
     const selectedBoard = this.boardSelectorService.selectedBoard();
 

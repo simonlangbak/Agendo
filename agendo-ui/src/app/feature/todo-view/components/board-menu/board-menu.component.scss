@@ -1,5 +1,5 @@
 :host {
-    background-color: var(--surface-100);
+    background-color: var(--surface-0);
     box-shadow: 5px 5px #00000005, 0 0 2px #0000000d, 0 1px 4px #00000014;
     z-index: 200;
     min-width: 16rem;
@@ -43,16 +43,16 @@
 }
 
 .selected-menu-item {
-    background-color: var(--gray-200);
+    background-color: var(--gray-100);
     color: var(--highlight-text-color);
 }
 
 .unselected-menu-item:hover {
-    background-color: var(--gray-200);
+    background-color: var(--gray-100);
     color: var(--highlight-text-color);
 }
 
 .selected-menu-item:hover {
-    background-color: var(--gray-200);
+    background-color: var(--gray-100);
     color: var(--highlight-text-color);
 }
