@@ -37,7 +37,7 @@ public class BoardService extends AbstractService {
         board =  boardRepository.save(board);
 
         // For now a board is created with 4 default columns
-        addColumnToBoard(board, "TODO", "For tasks pending to be started");
+        addColumnToBoard(board, "To Do", "For tasks pending to be started");
         addColumnToBoard(board, "In-progress", "For tasks were work is in-progress");
         addColumnToBoard(board, "Review", "For tasks waiting review");
         addColumnToBoard(board, "Done", "For tasks that are done");

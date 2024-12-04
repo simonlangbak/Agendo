@@ -17,7 +17,8 @@ export class BoardService {
    */
   public readonly boards: Signal<BoardDTO[]> = this.boardsSignal.asReadonly();
 
-  private readonly tasksSignal: WritableSignal<Map<number, Set<TaskDTO>>> = signal<Map<number, Set<TaskDTO>>>(new Map());
+  private readonly tasksSignal: WritableSignal<Map<number, Set<TaskDTO>>> =
+    signal<Map<number, Set<TaskDTO>>>(new Map(), { equal: () => false });
   /**
    * Holds an in-sync tasks for all boards. Key: boardId, value: task
    */
@@ -28,18 +29,18 @@ export class BoardService {
   ) {
   }
 
-   /**
-    * Fetches the latest board data from the backend and updates the board signal with the received value.
-    */
+  /**
+   * Fetches the latest board data from the backend and updates the board signal with the received value.
+   */
   public updateBoardsWithLatestData(): void {
     this.httpClient.get<BoardDTO[]>('api/v1/board')
-    .pipe(
-      map((boards: BoardDTO[]) => this.boardsSignal.set(boards)),
-      catchError((err: HttpErrorResponse) => {
-        console.log('An error occurred while fetching boards', err);
-        return EMPTY;
-      })
-    ).subscribe();
+      .pipe(
+        map((boards: BoardDTO[]) => this.boardsSignal.set(boards)),
+        catchError((err: HttpErrorResponse) => {
+          console.log('An error occurred while fetching boards', err);
+          return EMPTY;
+        })
+      ).subscribe();
   }
 
   /**
@@ -47,7 +48,7 @@ export class BoardService {
    */
   public addBoard(name: string, description: string): Promise<BoardDTO | number> {
     return firstValueFrom(
-      this.httpClient.post<BoardDTO>('api/v1/board', { name, description } as BoardCreationDTO, { observe: 'response'})
+      this.httpClient.post<BoardDTO>('api/v1/board', { name, description } as BoardCreationDTO, { observe: 'response' })
         .pipe(
           map((boardResponse: HttpResponse<BoardDTO>) => {
             const board = boardResponse.body as BoardDTO;
@@ -81,7 +82,7 @@ export class BoardService {
   public deleteBoard(boardId: number): Promise<boolean | number> {
     console.log('Deleting board...')
     return firstValueFrom(
-      this.httpClient.delete<void>('api/v1/board', { params: { boardId }, observe: 'response'})
+      this.httpClient.delete<void>('api/v1/board', { params: { boardId }, observe: 'response' })
         .pipe(
           map(() => {
             this.removeBoardFromSignal(boardId);
@@ -98,7 +99,7 @@ export class BoardService {
   private removeBoardFromSignal(boardId: number) {
     const boards = this.boardsSignal();
     const idx = boards.findIndex(b => b.id === boardId);
-    if (idx === -1) { 
+    if (idx === -1) {
       console.log("Could not find board to delete by its id", boardId);
     } else {
       boards.splice(idx, 1);
@@ -131,7 +132,7 @@ export class BoardService {
    */
   public addTaskToBoardColumn(columnId: number, name: string): Promise<boolean | number> {
     return firstValueFrom(
-      this.httpClient.post<TaskDTO>('api/v1/board/column/' + columnId+ '/task', { name } as TaskCreationDTO, { observe: 'response'})
+      this.httpClient.post<TaskDTO>('api/v1/board/column/' + columnId + '/task', { name } as TaskCreationDTO, { observe: 'response' })
         .pipe(
           map((taskResponse: HttpResponse<TaskDTO>) => {
             const task = taskResponse.body as TaskDTO;
@@ -150,11 +151,11 @@ export class BoardService {
     if (tasks.length === 0) {
       return;
     }
-   
+
     // We assume all tasks are for the same board
     const boardId = tasks[0].boardId;
     const allTasksInSignal = this.tasksSignal();
-    
+
     let tasksInBoard = allTasksInSignal.get(boardId);
     if (tasksInBoard === undefined) {
       tasksInBoard = new Set();

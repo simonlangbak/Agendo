@@ -2,17 +2,19 @@
     display: flex;
     width: 100%;
     flex-direction: row;
+    background-color: var(--surface-0);
 }
 
 .view {
     display: flex;
+    flex-direction: row;
     width: 100%;
 }
 
 .no-board-view {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    flex: 1;
     margin: auto;
     justify-content: center;
     align-items: center;
@@ -27,11 +29,71 @@
 }
 
 .board-view {
+    width: 100%;
+    display: flex;
     margin: 3rem;
+    flex-direction: column;
+}
+
+.board-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.board-title-container {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-content: center;
 }
 
 .board-title {
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 500;
+    margin: 0;
+}
+
+.board-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 2em;
+    margin-top: 2rem;
+    flex: 1;
+}
+
+.column {
+    display: flex;
+    background-color: var(--surface-100);
+    padding: 1em;
+    border-radius: 0.5em;
+    flex: 1;
+    flex-direction: column;
+}
+
+.column > p {
+    margin: 0;
+    margin-bottom: 1em;
+    font-weight: 500;
+    padding-bottom: 1em;
+    border-bottom: 1px solid black;
+    border-color: var(--surface-300);
+}
+
+.tasks {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.5em;
+}
+
+.task {
+    margin: 0.25em;
+    border: 1px solid var(--surface-300);
+    border-radius: 0.5em;
+}
+
+.task > p {
     margin: 0;
 }
