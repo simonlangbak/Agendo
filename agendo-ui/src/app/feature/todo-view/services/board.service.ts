@@ -17,12 +17,11 @@ export class BoardService {
    */
   public readonly boards: Signal<BoardDTO[]> = this.boardsSignal.asReadonly();
 
-  private readonly tasksSignal: WritableSignal<Map<number, Set<TaskDTO>>> =
-    signal<Map<number, Set<TaskDTO>>>(new Map(), { equal: () => false });
+  private readonly tasksSignal: WritableSignal<Map<number, TaskDTO[]>> = signal<Map<number, TaskDTO[]>>(new Map(), { equal: () => false });
   /**
    * Holds an in-sync tasks for all boards. Key: boardId, value: task
    */
-  public readonly tasks: Signal<Map<number, Set<TaskDTO>>> = this.tasksSignal.asReadonly();
+  public readonly tasks: Signal<Map<number, TaskDTO[]>> = this.tasksSignal.asReadonly();
 
   constructor(
     private httpClient: HttpClient
@@ -80,7 +79,6 @@ export class BoardService {
    * Deletes a board by id. If successful, the board is also removed from the board signal.
    */
   public deleteBoard(boardId: number): Promise<boolean | number> {
-    console.log('Deleting board...')
     return firstValueFrom(
       this.httpClient.delete<void>('api/v1/board', { params: { boardId }, observe: 'response' })
         .pipe(
@@ -158,15 +156,16 @@ export class BoardService {
 
     let tasksInBoard = allTasksInSignal.get(boardId);
     if (tasksInBoard === undefined) {
-      tasksInBoard = new Set();
+      tasksInBoard = [];
     }
 
     for (const task of tasks) {
-      if (!tasksInBoard.has(task)) {
-        tasksInBoard.add(task);
+      const idx = tasksInBoard.findIndex(t => t.id == task.id);
+      if (idx === -1) {
+        tasksInBoard.push(task);
         console.log('Added board to signal', task);
       } else {
-        tasksInBoard.add(task);
+        tasksInBoard[idx] = task;
         console.log('Updated board in signal', task);
       }
     }
@@ -175,4 +174,45 @@ export class BoardService {
     this.tasksSignal.set(allTasksInSignal);
     console.log('Updated tasks signal')
   }
+
+  /**
+   * Deletes a task by id. If successful, the task is also removed from the task signal.
+   */
+    public deleteTask(task: TaskDTO): Promise<boolean | number> {
+      return firstValueFrom(
+        this.httpClient.delete<void>('api/v1/task/' + task.id, { observe: 'response' })
+          .pipe(
+            map(() => {
+              this.removeTaskFromSignal(task);
+              return true;
+            }),
+            catchError((err: HttpErrorResponse) => {
+              console.log('An error occurred for the request', err);
+              return of(err.status);
+            })
+          )
+      );
+    }
+  
+    private removeTaskFromSignal(task: TaskDTO) {  
+      const boardId = task.boardId;
+      const allTasksInSignal = this.tasksSignal();
+  
+      const tasksInBoard = allTasksInSignal.get(boardId);
+      if (tasksInBoard === undefined) {
+        return;
+      }
+  
+      const idx = tasksInBoard.findIndex(t => t.id == task.id);
+      if (idx === -1) {
+        return;
+      } else {
+        tasksInBoard.splice(idx, 1);
+        console.log('Deleted task in signal', task);
+      }
+  
+      allTasksInSignal.set(boardId, tasksInBoard);
+      this.tasksSignal.set(allTasksInSignal);
+      console.log('Updated tasks signal')
+    }
 }

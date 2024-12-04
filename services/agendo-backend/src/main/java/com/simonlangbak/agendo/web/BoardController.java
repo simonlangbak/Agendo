@@ -54,7 +54,7 @@ public class BoardController {
 
     @PostMapping("/column/{id}/task")
     @ResponseStatus(HttpStatus.CREATED)
-    public TaskDTO addTaskToColumn(@Valid @PathVariable Long id, @RequestBody TaskCreationDTO taskCreationDTO) {
+    public TaskDTO addTaskToColumn(@PathVariable Long id, @Valid @RequestBody TaskCreationDTO taskCreationDTO) {
         Task addedTask = taskService.addTaskToBoardColumn(id, taskCreationDTO.name());
         return TaskDTO.of(addedTask);
     }

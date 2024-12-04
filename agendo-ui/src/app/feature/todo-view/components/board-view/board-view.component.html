@@ -13,8 +13,8 @@
 <!-- A template for tasks -->
 <ng-template #taskView let-task>
     <div class="task">
-        <p>{{ task.name}}</p>
-        <p>(ID - {{ task.id }})</p>
+        <p class="task-name">{{ task.name}}</p>
+        <p class="task-id">(ID - {{ task.id }})</p>
     </div>
 </ng-template>
 
@@ -32,9 +32,9 @@
         <div class="board-content">
             @for (column of item.columns; track $index) {
             <div class="column">
-                <p> {{column.name}} (X)</p>
+                <p> {{column.name}} ({{ tasksByColumns().get(column.id)?.length ?? 0 }})</p>
                 <div class="tasks">
-                    @for (task of tasks; track $index) {
+                    @for (task of tasksByColumns().get(column.id); track $index) {
                     <ng-container [ngTemplateOutlet]="taskView"
                         [ngTemplateOutletContext]="{$implicit: task}"></ng-container>
                     }
@@ -51,7 +51,7 @@
     <ng-container [ngTemplateOutlet]="noBoardSelectedView"></ng-container>
     } @else {
     <ng-container [ngTemplateOutlet]="boardSelectedView"
-        [ngTemplateOutletContext]="{$implicit: selectedBoard(), tasks:selectedBoardTasks()}"></ng-container>
+        [ngTemplateOutletContext]="{$implicit: selectedBoard(), tasksByColumns: tasksByColumns()}"></ng-container>
     }
 </div>
 

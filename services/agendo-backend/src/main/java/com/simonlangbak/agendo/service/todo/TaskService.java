@@ -41,4 +41,10 @@ public class TaskService extends AbstractService {
         log.debug("Added task: {}", task);
         return task;
     }
+
+    public void deleteTaskById(Long id) {
+        log.debug("Trying to delete task by id: {}", id);
+        taskRepository.deleteById(id);
+        log.debug("Task with id deleted: {}", id);
+    }
 }
