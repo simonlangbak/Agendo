@@ -12,7 +12,7 @@
 
 <!-- A template for tasks -->
 <ng-template #taskView let-task>
-    <div class="task">
+    <div class="task" pDraggable (onDragStart)="dragStart(task)" (onDragEnd)="dragEnd()">
         <p class="task-name">{{ task.name}}</p>
         <p class="task-id">(ID - {{ task.id }})</p>
     </div>
@@ -31,7 +31,7 @@
 
         <div class="board-content">
             @for (column of item.columns; track $index) {
-            <div class="column">
+            <div class="column drop-column" pDroppable (onDrop)="drop(column.id)">
                 <p> {{column.name}} ({{ tasksByColumns().get(column.id)?.length ?? 0 }})</p>
                 <div class="tasks">
                     @for (task of tasksByColumns().get(column.id); track $index) {

@@ -8,11 +8,12 @@ import { AddBoardDialogComponent } from '../add-board-dialog/add-board-dialog.co
 import { AddTaskDialogComponent } from "../add-task-dialog/add-task-dialog.component";
 import { AvatarModule } from 'primeng/avatar';
 import { TooltipModule } from 'primeng/tooltip';
+import { DragDropModule } from 'primeng/dragdrop';
 
 @Component({
   selector: 'app-board-view',
   standalone: true,
-  imports: [CommonModule, ButtonModule, AddBoardDialogComponent, AddTaskDialogComponent, AvatarModule, TooltipModule],
+  imports: [CommonModule, ButtonModule, AddBoardDialogComponent, AddTaskDialogComponent, AvatarModule, TooltipModule, DragDropModule],
   templateUrl: './board-view.component.html',
   styleUrl: './board-view.component.scss'
 })
@@ -20,14 +21,16 @@ export class BoardViewComponent {
   showAddBoardDialog: boolean = false;
   showAddTaskDialog: boolean = false;
 
+  draggedTask: TaskDTO | undefined = undefined;
+
   public readonly selectedBoard: Signal<BoardDTO | undefined> = computed(() => this.boardSelectorService.selectedBoard());
-  
+
   /**
    * Finds the ID of the first column in the selected board
    */
-  public readonly selectedBoardColumnId: Signal<number | undefined> = 
+  public readonly selectedBoardColumnId: Signal<number | undefined> =
     computed(() => this.selectedBoard() !== undefined ? this.selectedBoard()?.columns[0].id : undefined, { equal: () => false });
-  
+
   /**
    * Gets the tasks for the selected board
    */
@@ -36,7 +39,7 @@ export class BoardViewComponent {
       return this.boardService.tasks().get(this.selectedBoard()!.id);
     } else {
       return undefined;
-    }  
+    }
   }, { equal: () => false })
 
   /**
@@ -62,6 +65,23 @@ export class BoardViewComponent {
     private boardService: BoardService,
     private boardSelectorService: BoardSelectorService
   ) {
+  }
+
+  dragStart(task: TaskDTO) {
+    this.draggedTask = task;
+  }
+
+  dragEnd() {
+    this.draggedTask = undefined;
+  }
+
+  drop(columnId: number) {
+    if (!this.draggedTask) {
+      return;
+    }
+
+    this.boardService.moveTaskToColumn(this.draggedTask, columnId);
+    this.draggedTask = undefined;
   }
 
   /**

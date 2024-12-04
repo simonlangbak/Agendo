@@ -215,4 +215,10 @@ export class BoardService {
       this.tasksSignal.set(allTasksInSignal);
       console.log('Updated tasks signal')
     }
+
+    public moveTaskToColumn(task: TaskDTO, columnId: number) {
+      task.boardColumnId = columnId;
+      // TODO: Also do the change in the backend!!
+      this.mergeTasksIntoSignal([task]);
+    }
 }
