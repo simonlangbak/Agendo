@@ -1,0 +1,58 @@
+:host {
+    background-color: var(--surface-0);
+    box-shadow: 5px 5px #00000005, 0 0 2px #0000000d, 0 1px 4px #00000014;
+    z-index: 200;
+    min-width: 16rem;
+    max-width: 16rem;
+    padding: 0.5rem 1.5rem;
+    overflow-y: scroll;
+}
+
+.menu { 
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.25rem;
+    padding: 1rem 0;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    align-items: center;
+    font-weight: 400;
+    font-size: 1em;
+    padding: 0 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.menu-options {
+    margin-left: auto;
+}
+
+.menu-text span {
+    padding-right: 0.5rem;
+}
+
+.truncated-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 9rem;
+}
+
+.selected-menu-item {
+    background-color: var(--gray-100);
+    color: var(--highlight-text-color);
+}
+
+.unselected-menu-item:hover {
+    background-color: var(--gray-100);
+    color: var(--highlight-text-color);
+}
+
+.selected-menu-item:hover {
+    background-color: var(--gray-100);
+    color: var(--highlight-text-color);
+}

@@ -1,0 +1,12 @@
+<p-dialog header="Confirm deletion of board" [modal]="true" [(visible)]="visible" (onHide)="onHide()"[style]="{ width: '28rem' }">
+    <div class="delete-description">
+        <p>You are about to delete the board named <strong>{{ boardToDelete?.name }}.</strong></p>
+        <p>The action is irreversable and columns and tasks on the board will also be deleted.</p>
+        <p>Are you sure you want to delete the board?</p>
+    </div>
+
+    <div class="row button-group">
+        <p-button label="Cancel" severity="secondary" (onClick)="onHide()" />
+        <p-button label="Delete" severity="danger" (onClick)="onDelete()"  [loading]="isDeleting" />
+    </div>
+</p-dialog>

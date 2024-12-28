@@ -29,6 +29,7 @@ import java.util.List;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    public static final String JWT_TOKE_EXPIRED_REASON = "JWT token expired - use refresh token or make a new sign-in";
     private static RequestMatcher requestMatcher;
     private final JwtAuthenticationService jwtAuthenticationService;
     private final UserDetailsService userDetailsService;
@@ -63,7 +64,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
-
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -76,23 +76,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
             if (username != null && authentication == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-
-                if (jwtAuthenticationService.isTokenValid(jwtToken, userDetails)) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
-                    );
-
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                }
+                validateToken(request, username, jwtToken);
             }
 
             filterChain.doFilter(request, response);
         } catch (ExpiredJwtException exception) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "JWT token expires - use refresh token or make a new sign-in");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, JWT_TOKE_EXPIRED_REASON);
+        }
+    }
+
+    private void validateToken(HttpServletRequest request, String username, String jwtToken) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        if (jwtAuthenticationService.isTokenValid(jwtToken, userDetails)) {
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authToken);
         }
     }
 }

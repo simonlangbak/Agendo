@@ -1,20 +1,23 @@
 package com.simonlangbak.agendo.domain.user;
 
+import com.simonlangbak.agendo.domain.BaseEntity;
+import com.simonlangbak.agendo.domain.todo.Task;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "users")
-public class User implements UserDetails {
+public class User extends BaseEntity implements UserDetails, Comparable<User> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +36,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @ManyToMany(mappedBy = "assignees")
+    private SortedSet<Task> tasks = new TreeSet<>();
+
     @CreationTimestamp
     @Column(updatable = false, nullable = false)
     private Date created;
@@ -40,64 +46,6 @@ public class User implements UserDetails {
     @UpdateTimestamp
     @Column(nullable = false)
     private Date updated;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public UserRole getRole() {
-        return role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -108,25 +56,21 @@ public class User implements UserDetails {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username)
-                && Objects.equals(password, user.password) && Objects.equals(email, user.email) && role == user.role;
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, email, role);
+        return Objects.hash(id, username);
     }
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", role=" + role +
-                ", created=" + created +
-                ", updated=" + updated +
-                '}';
+        return "User{" + "id=" + id + ", username='" + username + '\'' + '}';
+    }
+
+    @Override
+    public int compareTo(User o) {
+        return this.id == null || o.id == null ? 1 : this.id.compareTo(o.id);
     }
 }

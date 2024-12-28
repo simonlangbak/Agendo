@@ -1,0 +1,59 @@
+<!-- A template for when no board is selected -->
+<ng-template #noBoardSelectedView>
+    <div class="no-board-view">
+        <h2>No board selected</h2>
+        <div class="create-board-text">
+            <h3>Select a board in the menu on the left or </h3>
+            <p-button label="create a new board..." [raised]="true" severity="success"
+                (onClick)="onCreateBoardClicked()" />
+        </div>
+    </div>
+</ng-template>
+
+<!-- A template for tasks -->
+<ng-template #taskView let-task>
+    <div class="task" pDraggable (onDragStart)="dragStart(task)" (onDragEnd)="dragEnd()">
+        <p class="task-name">{{ task.name}}</p>
+        <p class="task-id">(ID - {{ task.id }})</p>
+    </div>
+</ng-template>
+
+<!-- A template for when a board is selected -->
+<ng-template #boardSelectedView let-item let-tasks="tasks">
+    <div class="board-view">
+        <div class="board-header">
+            <div class="board-title-container">
+                <p class="board-title">{{ item.name }}</p>
+                <p-avatar label="?" shape="circle" pTooltip="{{ item.description }}" tooltipPosition="right"/>
+            </div>
+            <p-button label="Create task" severity="secondary" (onClick)="onCreateTaskClicked()" />
+        </div>
+
+        <div class="board-content">
+            @for (column of item.columns; track $index) {
+            <div class="column drop-column" pDroppable (onDrop)="drop(column.id)">
+                <p> {{column.name}} ({{ tasksByColumns().get(column.id)?.length ?? 0 }})</p>
+                <div class="tasks">
+                    @for (task of tasksByColumns().get(column.id); track $index) {
+                    <ng-container [ngTemplateOutlet]="taskView"
+                        [ngTemplateOutletContext]="{$implicit: task}"></ng-container>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</ng-template>
+
+<!-- The board view -->
+<div class="view">
+    @if (selectedBoard() === undefined) {
+    <ng-container [ngTemplateOutlet]="noBoardSelectedView"></ng-container>
+    } @else {
+    <ng-container [ngTemplateOutlet]="boardSelectedView"
+        [ngTemplateOutletContext]="{$implicit: selectedBoard(), tasksByColumns: tasksByColumns()}"></ng-container>
+    }
+</div>
+
+<app-add-board-dialog [(visible)]="showAddBoardDialog"></app-add-board-dialog>
+<app-add-task-dialog [(visible)]="showAddTaskDialog" [columnId]="selectedBoardColumnId()"></app-add-task-dialog>

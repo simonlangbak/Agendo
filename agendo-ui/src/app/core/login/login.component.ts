@@ -11,7 +11,7 @@ import { PasswordModule } from 'primeng/password';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, CardModule, ButtonModule, CheckboxModule, InputTextModule, PasswordModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, CardModule, ButtonModule, CheckboxModule, InputTextModule, PasswordModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

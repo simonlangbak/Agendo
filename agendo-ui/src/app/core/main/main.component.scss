@@ -1,6 +1,6 @@
 .content {
     display: flex;
-    height: 100%;
+    height: 100vh;
     width: 100%;
     flex-direction: column;
     overflow: hidden;
@@ -10,5 +10,5 @@
     display: flex;
     background-color: var(--surface-100);
     height: 100%;
-    flex-grow: 1;
+    flex: 1;
 }
