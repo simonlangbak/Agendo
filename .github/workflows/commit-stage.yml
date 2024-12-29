@@ -1,0 +1,40 @@
+name: Commit Stage
+on: push
+
+env:
+  BACKEND_DIR: ${{ github.workspace }}/services/agendo-backend/
+  MVNW_PATH: ${{ env.BACKEND_DIR }}/mvnw
+
+jobs:
+    build-and-test-backend:
+        name: Build and test the backend
+        runs-on: ubuntu-22.04
+        permissions:
+            contents: read
+            security-events: write
+        steps:
+          - name: Checkout source code
+            uses: actions/checkout@v3
+          - name: Set up JDK
+            uses: actions/setup-java@v3
+            with:
+                distribution: temurin
+                java-version: 21
+                cache: maven
+          - name: Code vulnerability scanning
+            uses: anchore/scan-action@v3
+            id: scan
+            with:
+                path: "${{ env.BACKEND_DIR }}"
+                fail-build: true
+                severity-cutoff: high
+                acs-report-enable: true
+          - name: Upload vulnerability report
+            uses: github/codeql-action/upload-sarif@v2
+            if: success() || failure()
+            with:
+                sarif_file: ${{ steps.scan.outputs.sarif }}
+          - name: Build, unit tests and integration tests
+            run: |
+                chmod +x ${{ env.MVNW_PATH }}
+                ./${{ env.MVNW_PATH }} install
