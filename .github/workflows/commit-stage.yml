@@ -167,7 +167,7 @@ jobs:
         - name: Build container image
           run: |
             cd ${{ env.FRONTEND_DIR }}
-            docker build -t ${{ env.FRONTEND_IMAGE_TAG}} -f .\angular-nginx.dockerfile .
+            docker build -t ${{ env.FRONTEND_IMAGE_TAG}} -f angular-nginx.dockerfile .
 
         - name: OCI image vulnerability scanning
           uses: anchore/scan-action@v6.0.0
