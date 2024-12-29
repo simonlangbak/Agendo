@@ -1,0 +1,3 @@
+security:
+  jwt:
+    secret-key: 12345678901234567890123456789012 # This is a placeholder secret key only used for tests!

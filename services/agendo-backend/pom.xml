@@ -9,12 +9,13 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.simonlangbak</groupId>
-	<artifactId>agendo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>agendo-backend</artifactId>
+	<version>0.0.1</version>
 	<name>agendo</name>
 	<description>A simple TODO app</description>
 	<properties>
 		<java.version>21</java.version>
+		<imageName>${project.artifactId}:${project.version}</imageName>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -105,7 +106,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<scope>annotationProcessor</scope>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
@@ -114,6 +115,14 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<image>
+						<name>${imageName}</name>
+					</image>
+					<docker>
+						<host>//./pipe/dockerDesktopLinuxEngine</host>
+					</docker>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
