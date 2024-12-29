@@ -49,7 +49,7 @@ jobs:
 
     package:
       name: Package and publish container for backend
-      # if: ${{ github.ref == 'refs/heads/main' }}
+      if: ${{ github.ref == 'refs/heads/main' }}
       needs: [ build-and-test-backend ]
       runs-on: ubuntu-latest
       permissions:
@@ -109,13 +109,6 @@ jobs:
           run: |
             docker tag agendo-backend:${{ env.VERSION }} ${{ env.IMAGE_TAG }}
             docker push ${{ env.IMAGE_TAG }}
-
-        - name: Generate artifact attestation
-          uses: actions/attest-build-provenance@v2
-          with:
-            subject-name: ${{ env.IMAGE_TAG }}
-            subject-digest: ${{ steps.push.outputs.digest }}
-            push-to-registry: true
 
     build-frontend:
         name: Build the frontend
