@@ -3,7 +3,7 @@ on: push
 
 env:
   BACKEND_DIR: ${{ github.workspace }}/services/agendo-backend/
-  MVNW_PATH: ${{ env.BACKEND_DIR }}/mvnw
+  MVNW_PATH: ${{ github.workspace }}/services/agendo-backend/mvnw
 
 jobs:
     build-and-test-backend:
