@@ -1,6 +1,7 @@
 name: Commit Stage
-on: push
-on: workflow_dispatch
+on: 
+  push:
+  workflow_dispatch:
 
 env:
   BACKEND_DIR: ${{ github.workspace }}/services/agendo-backend/
