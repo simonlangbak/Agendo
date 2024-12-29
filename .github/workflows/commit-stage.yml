@@ -5,6 +5,7 @@ on:
 
 env:
   BACKEND_DIR: ${{ github.workspace }}/services/agendo-backend/
+  SECURITY_JWT_SECRET_KEY: 0d0a74917823f343407c8f00a1d37044fcc237a341032bc07dd65abf22323c83 # Secret key is ONLY used for this test job
 
 jobs:
     build-and-test-backend:
