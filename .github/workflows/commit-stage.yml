@@ -71,4 +71,4 @@ jobs:
             run: |
                 cd ${{ env.FRONTEND_DIR }}
                 npm ci
-                npm build
+                npm run build
