@@ -101,15 +101,20 @@ jobs:
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
 
+        - name: Set IMAGE_NAME environment variable
+          run: |
+            echo "IMAGE_TAG=${{ env.REGISTRY }}/${{ github.actor }}/agendo-backend:latest" >> $GITHUB_ENV
+
         - name: Publish container image
           run: |
-            docker tag agendo-backend:${{ env.VERSION }} ${{ env.REGISTRY }}/${{ github.actor }}//agendo-backend:latest
-            docker push ${{ env.REGISTRY }}/${{ github.actor }}//agendo-backend:latest
+            
+            docker tag agendo-backend:${{ env.VERSION }} ${{ env.IMAGE_TAG }}
+            docker push ${{ env.IMAGE_TAG }}
 
         - name: Generate artifact attestation
           uses: actions/attest-build-provenance@v2
           with:
-            subject-name: ${{ github.actor }}/agendo-backend:latest
+            subject-name: ${{ env.IMAGE_TAG }}
             subject-digest: ${{ steps.push.outputs.digest }}
             push-to-registry: true
 
