@@ -65,6 +65,9 @@ jobs:
               java-version: 21
               cache: maven
 
+        - name: Docker Setup Buildx
+          uses: docker/setup-buildx-action@v3.8.0
+            
         - name: Build container image
           run: |
             cd ${{ env.BACKEND_DIR }}
