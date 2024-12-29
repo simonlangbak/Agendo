@@ -28,7 +28,6 @@ jobs:
                 path: "${{ env.BACKEND_DIR }}"
                 fail-build: true
                 severity-cutoff: high
-                acs-report-enable: true
           - name: Upload vulnerability report
             uses: github/codeql-action/upload-sarif@v3
             if: success() || failure()
