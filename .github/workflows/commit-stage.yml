@@ -5,7 +5,6 @@ on:
 
 env:
   BACKEND_DIR: ${{ github.workspace }}/services/agendo-backend/
-  MVNW_PATH: ${{ github.workspace }}/services/agendo-backend/mvnw
 
 jobs:
     build-and-test-backend:
@@ -37,5 +36,6 @@ jobs:
                 sarif_file: ${{ steps.scan.outputs.sarif }}
           - name: Build, unit tests and integration tests
             run: |
-                chmod +x ${{ env.MVNW_PATH }}
-                ./${{ env.MVNW_PATH }} install
+                cd ${{ env.BACKEND_DIR }}
+                chmod +x mvnw
+                ./mvnw install
