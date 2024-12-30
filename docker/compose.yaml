@@ -1,3 +1,5 @@
+name: agendo
+
 networks:
   agendo:
     driver: bridge
@@ -8,6 +10,8 @@ services:
     image: ghcr.io/simonlangbak/agendo-backend:latest
     networks:
       - agendo
+    ports:
+      - "9000:9000"
     environment:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://agendo-db:5432/agendo"
       SPRING_DATASOURCE_USERNAME: "agendo"
@@ -25,6 +29,9 @@ services:
       - "8080:80"
     environment:
       API_BASE_URL: "http://agendo-backend:9000"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./config.json:/usr/share/nginx/html/assets/config.json
 
   agendo-db:
     container_name: agendo-db
