@@ -49,7 +49,7 @@ jobs:
 
     package-backend:
       name: Package and publish container for backend
-      # if: ${{ github.ref == 'refs/heads/main' }}
+      if: ${{ github.ref == 'refs/heads/main' }}
       needs: [ build-and-test-backend ]
       runs-on: ubuntu-latest
       permissions:
@@ -147,7 +147,7 @@ jobs:
 
     package-frontend:
       name: Package and publish container for frontend
-      # if: ${{ github.ref == 'refs/heads/main' }}
+      if: ${{ github.ref == 'refs/heads/main' }}
       needs: [ build-frontend ]
       runs-on: ubuntu-latest
       permissions:
