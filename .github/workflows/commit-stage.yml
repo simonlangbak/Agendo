@@ -1,0 +1,197 @@
+name: Commit Stage
+on: 
+  push:
+  workflow_dispatch:
+
+env:
+  BACKEND_DIR: ${{ github.workspace }}/services/agendo-backend/
+  FRONTEND_DIR: ${{ github.workspace }}/agendo-ui/
+  REGISTRY: ghcr.io
+
+jobs:
+    build-and-test-backend:
+        name: Build and test the backend
+        runs-on: ubuntu-latest
+        permissions:
+          contents: read
+          packages: write
+          security-events: write
+        steps:
+          - name: Checkout source code
+            uses: actions/checkout@v4
+
+          - name: Setup Java JDK
+            uses: actions/setup-java@v4.6.0 
+            with:
+                distribution: temurin
+                java-version: 21
+                cache: maven
+
+          - name: Code vulnerability scanning
+            uses: anchore/scan-action@v6.0.0
+            id: scan
+            with:
+                path: "${{ env.BACKEND_DIR }}"
+                fail-build: true
+                severity-cutoff: high
+
+          - name: Upload vulnerability report
+            uses: github/codeql-action/upload-sarif@v3
+            if: success() || failure()
+            with:
+                sarif_file: ${{ steps.scan.outputs.sarif }}
+
+          - name: Build, unit tests and integration tests
+            run: |
+                cd ${{ env.BACKEND_DIR }}
+                chmod +x mvnw
+                ./mvnw install
+
+    package-backend:
+      name: Package and publish container for backend
+      if: ${{ github.ref == 'refs/heads/main' }}
+      needs: [ build-and-test-backend ]
+      runs-on: ubuntu-latest
+      permissions:
+        contents: read
+        packages: write
+        attestations: write
+        id-token: write
+        security-events: write
+      steps:
+        - name: Checkout source code
+          uses: actions/checkout@v4
+
+        - name: Setup Java JDK
+          uses: actions/setup-java@v4.6.0 
+          with:
+              distribution: temurin
+              java-version: 21
+              cache: maven
+            
+        - name: Build container image
+          run: |
+            cd ${{ env.BACKEND_DIR }}
+            chmod +x mvnw
+            ./mvnw spring-boot:build-image -DskipTests
+
+        - name: Set VERSION environment variable
+          run: |
+            cd ${{ env.BACKEND_DIR }}
+            echo "VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+        - name: OCI image vulnerability scanning
+          uses: anchore/scan-action@v6.0.0
+          id: scan
+          with:
+            image: agendo-backend:${{ env.VERSION }}
+            fail-build: false
+            severity-cutoff: high
+
+        - name: Upload vulnerability report
+          uses: github/codeql-action/upload-sarif@v3
+          if: success() || failure()
+          with:
+            sarif_file: ${{ steps.scan.outputs.sarif }}
+
+        - name: Login to GitHub Container Registry
+          uses: docker/login-action@v3
+          with:
+            registry: ${{ env.REGISTRY }}
+            username: ${{ github.actor }}
+            password: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: Set IMAGE_NAME environment variable
+          run: |
+            echo "BACKEND_IMAGE_TAG=${{ env.REGISTRY }}/${{ github.actor }}/agendo-backend:latest" >> $GITHUB_ENV
+
+        - name: Publish container image
+          run: |
+            docker tag agendo-backend:${{ env.VERSION }} ${{ env.BACKEND_IMAGE_TAG }}
+            docker push ${{ env.BACKEND_IMAGE_TAG }}
+
+    build-frontend:
+        name: Build the frontend
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            security-events: write
+        steps:
+          - name: Checkout source code
+            uses: actions/checkout@v4
+
+          - name: Setup Node.js environment
+            uses: actions/setup-node@v4.1.0
+            with:
+              node-version: 18
+
+          - name: Code vulnerability scanning
+            uses: anchore/scan-action@v6.0.0
+            id: scan
+            with:
+                path: "${{ env.FRONTEND_DIR }}"
+                fail-build: true
+                severity-cutoff: high
+
+          - name: Upload vulnerability report
+            uses: github/codeql-action/upload-sarif@v3
+            if: success() || failure()
+            with:
+                sarif_file: ${{ steps.scan.outputs.sarif }}
+
+          - name: Build the frontend
+            run: |
+                cd ${{ env.FRONTEND_DIR }}
+                npm ci
+                npm run build
+
+    package-frontend:
+      name: Package and publish container for frontend
+      if: ${{ github.ref == 'refs/heads/main' }}
+      needs: [ build-frontend ]
+      runs-on: ubuntu-latest
+      permissions:
+        contents: read
+        packages: write
+        attestations: write
+        id-token: write
+        security-events: write
+      steps:
+        - name: Checkout source code
+          uses: actions/checkout@v4
+
+        - name: Set IMAGE_NAME environment variable
+          run: |
+            echo "FRONTEND_IMAGE_TAG=${{ env.REGISTRY }}/${{ github.actor }}/agendo-frontend:latest" >> $GITHUB_ENV
+
+        - name: Build container image
+          run: |
+            cd ${{ env.FRONTEND_DIR }}
+            docker build -t ${{ env.FRONTEND_IMAGE_TAG}} -f angular-nginx.dockerfile .
+
+        - name: OCI image vulnerability scanning
+          uses: anchore/scan-action@v6.0.0
+          id: scan
+          with:
+            image: ${{ env.FRONTEND_IMAGE_TAG}}
+            fail-build: false
+            severity-cutoff: high
+
+        - name: Upload vulnerability report
+          uses: github/codeql-action/upload-sarif@v3
+          if: success() || failure()
+          with:
+            sarif_file: ${{ steps.scan.outputs.sarif }}
+
+        - name: Login to GitHub Container Registry
+          uses: docker/login-action@v3
+          with:
+            registry: ${{ env.REGISTRY }}
+            username: ${{ github.actor }}
+            password: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: Publish container image
+          run: |
+            docker push ${{ env.FRONTEND_IMAGE_TAG }}
+
+    

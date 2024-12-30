@@ -1,0 +1,44 @@
+name: agendo
+
+networks:
+  agendo:
+    driver: bridge
+
+services:
+  agendo-backend:
+    container_name: agendo-backend
+    image: ghcr.io/simonlangbak/agendo-backend:latest
+    networks:
+      - agendo
+    ports:
+      - "9000:9000"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://agendo-db:5432/agendo"
+      SPRING_DATASOURCE_USERNAME: "agendo"
+      SPRING_DATASOURCE_PASSWORD: "agendo"
+      SECURITY_JWT_SECRET-KEY: 844628808a5ff7ed82f962f94ebe611f684b587eb505ba0f31a1df8af3c73eae
+    depends_on:
+      - agendo-db
+
+  agendo-frontend:
+    container_name: agendo-frontend
+    image: ghcr.io/simonlangbak/agendo-frontend:latest
+    networks:
+      - agendo
+    ports:
+      - "8080:80"
+    environment:
+      API_BASE_URL: "http://agendo-backend:9000"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./config.json:/usr/share/nginx/html/assets/config.json
+
+  agendo-db:
+    container_name: agendo-db
+    image: postgres:latest
+    networks:
+      - agendo
+    environment:
+      POSTGRES_DB: "agendo"
+      POSTGRES_USER: "agendo"
+      POSTGRES_PASSWORD: "agendo"
